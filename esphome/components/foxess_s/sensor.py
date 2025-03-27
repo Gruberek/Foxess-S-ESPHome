@@ -180,13 +180,13 @@ async def to_code(config):
     flow_control_pin = await cg.gpio_pin_expression(config[CONF_FLOW_CONTROL_PIN])
     cg.add(var.set_fc_pin(flow_control_pin))
 
-        gridd_config = config[gridd]
+        gridd_config = config[CONF_GRIDD]
         for sensor_type in GRIDD_SENSORS:
             if sensor_type in gridd_config:
                 sens = await sensor.new_sensor(gridd_config[sensor_type])
                 cg.add(getattr(var, f"set_gridd_{sensor_type}_sensor")(sens))
 
-        pv_config = config[pv]
+        pv_config = config[CONF_PV]
         for sensor_type in pv_config:
             if sensor_type in pv_config:
                 sens = await sensor.new_sensor(pv_config[sensor_type])
