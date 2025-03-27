@@ -9,7 +9,7 @@ Compatible with:
 ```yaml
 uart:
   tx_pin: GPIO1
-  rx_pin: GPIO13
+  rx_pin: GPIO3
   baud_rate: 9600
 
 sensor:
