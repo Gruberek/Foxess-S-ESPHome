@@ -126,7 +126,7 @@ optional<bool> FoxessS::check_msg() {
   return true;
 }
 
-void FoxessSolar::parse_message() {
+void FoxessS::parse_message() {
   ESP_LOGVV("FoxessS::parse_message", "start");
   this->millis_lastmessage_ = millis();
 
@@ -167,7 +167,7 @@ void FoxessSolar::parse_message() {
   this->set_inverter_mode(1);  // ONLINE
 }
 
-void FoxessSolar::set_inverter_mode(uint32_t mode) {
+void FoxessS::set_inverter_mode(uint32_t mode) {
   this->inverter_mode_ = mode;
   if (this->inverter_status_ != nullptr)
     this->inverter_status_->publish_state(mode);

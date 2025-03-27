@@ -181,7 +181,7 @@ async def to_code(config):
     flow_control_pin = await cg.gpio_pin_expression(config[CONF_FLOW_CONTROL_PIN])
     cg.add(var.set_fc_pin(flow_control_pin))
 
-    for i, grid in enumerate([CONF_GRID]):
+    grid in enumerate([CONF_GRID]):
         if grid not in config:
             continue
 
@@ -191,7 +191,7 @@ async def to_code(config):
                 sens = await sensor.new_sensor(grid_config[sensor_type])
                 cg.add(getattr(var, f"set_grid_{sensor_type}_sensor")(i, sens))
 
-    for i, pv in enumerate([CONF_PV]):
+    pv in enumerate([CONF_PV]):
         if pv not in config:
             continue
 

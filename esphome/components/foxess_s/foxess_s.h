@@ -101,5 +101,5 @@ class FoxessS : public PollingComponent, public uart::UARTDevice {
   sensor::Sensor *total_energy_production_{nullptr};
 };
 
-}  // namespace foxess_solar
+}  // namespace foxess_s
 }  // namespace esphome
