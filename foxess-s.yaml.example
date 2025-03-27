@@ -1,10 +1,8 @@
 esphome:
-  name: foxess-inverter
+  name: foxess-s
 
-esp32:
-  board: esp32dev
-  framework:
-    type: esp-idf
+esp8266:
+  board: d1_mini
 
 external_components:
   - source:
@@ -16,7 +14,7 @@ external_components:
 
 # Enable logging
 logger:
-  level: WARN
+  level: DEBUG
   baud_rate: 0
 
 # Enable Home Assistant API
@@ -38,16 +36,16 @@ wifi:
 #    subnet: 255.255.255.0
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
-  ap:
-    ssid: !secret wifi_fallback_ssid
-    password: !secret wifi_fallback_pass
+ ap:
+  ssid: !secret wifi_fallback_ssid
+  password: !secret wifi_fallback_pass
 
 captive_portal:
 
 uart:
   id: uart_bus
-  tx_pin: GPIO16
-  rx_pin: GPIO17
+  tx_pin: GPIO1
+  rx_pin: GPIO3
   baud_rate: 9600
 
 button:
@@ -61,63 +59,24 @@ text_sensor:
     icon: mdi:solar-power-variant
 
 sensor:
-  - platform: foxess_solar
-    phase_a:
+  - platform: foxess_s
+    grid:
       voltage:
-        name: "FoxESS Phase A Voltage"
+        name: "FoxESS Grid Voltage"
       current:
-        name: "FoxESS Phase A Current"
+        name: "FoxESS Grid Current"
       active_power:
-        name: "FoxESS Phase A Power"
+        name: "FoxESS Grid Active Power"
       frequency:
-        name: "FoxESS Phase A Frequency"
-    phase_b:
-      voltage:
-        name: "FoxESS Phase B Voltage"
-      current:
-        name: "FoxESS Phase B Current"
-      active_power:
-        name: "FoxESS Phase B Power"
-      frequency:
-        name: "FoxESS Phase B Frequency"
-    phase_c:
-      voltage:
-        name: "FoxESS Phase C Voltage"
-      current:
-        name: "FoxESS Phase C Current"
-      active_power:
-        name: "FoxESS Phase C Power"
-      frequency:
-        name: "FoxESS Phase C Frequency"
+        name: "FoxESS Grid Frequency"
 
-    pv1:
+    pv:
       voltage:
-        name: "FoxESS PV1 Voltage"
+        name: "FoxESS PV Voltage"
       current:
-        name: "FoxESS PV1 Current"
+        name: "FoxESS PV Current"
       active_power:
-        name: "FoxESS PV1 Power"
-    pv2:
-      voltage:
-        name: "FoxESS PV2 Voltage"
-      current:
-        name: "FoxESS PV2 Current"
-      active_power:
-        name: "FoxESS PV2 Power"
-    pv3:
-      voltage:
-        name: "FoxESS PV3 Voltage"
-      current:
-        name: "FoxESS PV3 Current"
-      active_power:
-        name: "FoxESS PV3 Power"
-    pv4:
-      voltage:
-        name: "FoxESS PV4 Voltage"
-      current:
-        name: "FoxESS PV4 Current"
-      active_power:
-        name: "FoxESS PV4 Power"
+        name: "FoxESS PV Power"
 
     total_energy_production:
       name: "Total Energy Production"

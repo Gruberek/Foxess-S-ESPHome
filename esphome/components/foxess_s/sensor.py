@@ -7,9 +7,7 @@ from esphome.const import (
     CONF_CURRENT,
     CONF_FREQUENCY,
     CONF_ID,
-    CONF_PHASE_A,
-    CONF_PHASE_B,
-    CONF_PHASE_C,
+    CONF_GRID,
     CONF_VOLTAGE,
     DEVICE_CLASS_CURRENT,
     DEVICE_CLASS_ENERGY,
@@ -30,10 +28,7 @@ from esphome.const import (
 CONF_FLOW_CONTROL_PIN = "flow_control_pin"
 CONF_ENERGY_PRODUCTION_DAY = "energy_production_day"
 CONF_TOTAL_ENERGY_PRODUCTION = "total_energy_production"
-CONF_PV1 = "pv1"
-CONF_PV2 = "pv2"
-CONF_PV3 = "pv3"
-CONF_PV4 = "pv4"
+CONF_PV = "pv"
 
 CONF_LOADS_POWER = "loads_power"
 CONF_GRID_POWER = "grid_power"
@@ -46,12 +41,12 @@ CONF_AMBIENT_TEMP = "ambient_temp"
 
 DEPENDENCIES = ["uart"]
 
-foxess_solar_ns = cg.esphome_ns.namespace("foxess_solar")
-FoxessSolar = foxess_solar_ns.class_(
-    "FoxessSolar", cg.PollingComponent, uart.UARTDevice
+foxess_s_ns = cg.esphome_ns.namespace("foxess_s")
+FoxessS = foxess_s_ns.class_(
+    "FoxessS", cg.PollingComponent, uart.UARTDevice
 )
 
-PHASE_SENSORS = {
+GRID_SENSORS = {
     CONF_VOLTAGE: sensor.sensor_schema(
         unit_of_measurement=UNIT_VOLT,
         accuracy_decimals=1,
@@ -98,8 +93,8 @@ PV_SENSORS = {
     ),
 }
 
-PHASE_SCHEMA = cv.Schema(
-    {cv.Optional(sensor): schema for sensor, schema in PHASE_SENSORS.items()}
+GRID_SCHEMA = cv.Schema(
+    {cv.Optional(sensor): schema for sensor, schema in GRID_SENSORS.items()}
 )
 PV_SCHEMA = cv.Schema(
     {cv.Optional(sensor): schema for sensor, schema in PV_SENSORS.items()}
@@ -108,15 +103,10 @@ PV_SCHEMA = cv.Schema(
 CONFIG_SCHEMA = (
     cv.Schema(
         {
-            cv.GenerateID(): cv.declare_id(FoxessSolar),
+            cv.GenerateID(): cv.declare_id(FoxessS),
             cv.Optional(CONF_FLOW_CONTROL_PIN, default="GPIO4"): pins.gpio_output_pin_schema,
-            cv.Optional(CONF_PHASE_A): PHASE_SCHEMA,
-            cv.Optional(CONF_PHASE_B): PHASE_SCHEMA,
-            cv.Optional(CONF_PHASE_C): PHASE_SCHEMA,
-            cv.Optional(CONF_PV1): PV_SCHEMA,
-            cv.Optional(CONF_PV2): PV_SCHEMA,
-            cv.Optional(CONF_PV3): PV_SCHEMA,
-            cv.Optional(CONF_PV4): PV_SCHEMA,
+            cv.Optional(CONF_GRID): GRID_SCHEMA,
+            cv.Optional(CONF_PV): PV_SCHEMA,
             cv.Optional(CONF_INVERTER_STATUS): sensor.sensor_schema(),
             cv.Optional(CONF_LOADS_POWER): sensor.sensor_schema(
                 unit_of_measurement=UNIT_WATT,
@@ -191,17 +181,17 @@ async def to_code(config):
     flow_control_pin = await cg.gpio_pin_expression(config[CONF_FLOW_CONTROL_PIN])
     cg.add(var.set_fc_pin(flow_control_pin))
 
-    for i, phase in enumerate([CONF_PHASE_A, CONF_PHASE_B, CONF_PHASE_C]):
-        if phase not in config:
+    for i, grid in enumerate([CONF_GRID]):
+        if grid not in config:
             continue
 
-        phase_config = config[phase]
-        for sensor_type in PHASE_SENSORS:
-            if sensor_type in phase_config:
-                sens = await sensor.new_sensor(phase_config[sensor_type])
-                cg.add(getattr(var, f"set_phase_{sensor_type}_sensor")(i, sens))
+        grid_config = config[grid]
+        for sensor_type in GRID_SENSORS:
+            if sensor_type in grid_config:
+                sens = await sensor.new_sensor(grid_config[sensor_type])
+                cg.add(getattr(var, f"set_grid_{sensor_type}_sensor")(i, sens))
 
-    for i, pv in enumerate([CONF_PV1, CONF_PV2, CONF_PV3, CONF_PV4]):
+    for i, pv in enumerate([CONF_PV]):
         if pv not in config:
             continue
 
