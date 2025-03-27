@@ -189,7 +189,7 @@ async def to_code(config):
         for sensor_type in GRID_SENSORS:
             if sensor_type in grid_config:
                 sens = await sensor.new_sensor(grid_config[sensor_type])
-                cg.add(getattr(var, f"set_grid_{sensor_type}_sensor")(i, sens))
+                cg.add(getattr(var, f"set_grid_{sensor_type}_sensor")(sens))
 
     pv in enumerate([CONF_PV]):
         if pv not in config:
@@ -199,4 +199,4 @@ async def to_code(config):
         for sensor_type in pv_config:
             if sensor_type in pv_config:
                 sens = await sensor.new_sensor(pv_config[sensor_type])
-                cg.add(getattr(var, f"set_pv_{sensor_type}_sensor")(i, sens))
+                cg.add(getattr(var, f"set_pv_{sensor_type}_sensor")(sens))
