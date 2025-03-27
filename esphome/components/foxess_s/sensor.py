@@ -7,7 +7,7 @@ from esphome.const import (
     CONF_CURRENT,
     CONF_FREQUENCY,
     CONF_ID,
-    CONF_GRID,
+    CONF_GRIDD,
     CONF_VOLTAGE,
     DEVICE_CLASS_CURRENT,
     DEVICE_CLASS_ENERGY,
@@ -45,7 +45,7 @@ FoxessS = foxess_s_ns.class_(
     "FoxessS", cg.PollingComponent, uart.UARTDevice
 )
 
-GRID_SENSORS = {
+GRIDD_SENSORS = {
     CONF_VOLTAGE: sensor.sensor_schema(
         unit_of_measurement=UNIT_VOLT,
         accuracy_decimals=1,
@@ -92,8 +92,8 @@ PV_SENSORS = {
     ),
 }
 
-GRID_SCHEMA = cv.Schema(
-    {cv.Optional(sensor): schema for sensor, schema in GRID_SENSORS.items()}
+GRIDD_SCHEMA = cv.Schema(
+    {cv.Optional(sensor): schema for sensor, schema in GRIDD_SENSORS.items()}
 )
 PV_SCHEMA = cv.Schema(
     {cv.Optional(sensor): schema for sensor, schema in PV_SENSORS.items()}
@@ -104,7 +104,7 @@ CONFIG_SCHEMA = (
         {
             cv.GenerateID(): cv.declare_id(FoxessS),
             cv.Optional(CONF_FLOW_CONTROL_PIN, default="GPIO4"): pins.gpio_output_pin_schema,
-            cv.Optional(CONF_GRID): GRID_SCHEMA,
+            cv.Optional(CONF_GRIDD): GRIDD_SCHEMA,
             cv.Optional(CONF_PV): PV_SCHEMA,
             cv.Optional(CONF_INVERTER_STATUS): sensor.sensor_schema(),
             cv.Optional(CONF_LOADS_POWER): sensor.sensor_schema(
@@ -180,11 +180,11 @@ async def to_code(config):
     flow_control_pin = await cg.gpio_pin_expression(config[CONF_FLOW_CONTROL_PIN])
     cg.add(var.set_fc_pin(flow_control_pin))
 
-        grid_config = config[grid]
-        for sensor_type in GRID_SENSORS:
-            if sensor_type in grid_config:
-                sens = await sensor.new_sensor(grid_config[sensor_type])
-                cg.add(getattr(var, f"set_grid_{sensor_type}_sensor")(sens))
+        gridd_config = config[gridd]
+        for sensor_type in GRIDD_SENSORS:
+            if sensor_type in gridd_config:
+                sens = await sensor.new_sensor(gridd_config[sensor_type])
+                cg.add(getattr(var, f"set_gridd_{sensor_type}_sensor")(sens))
 
         pv_config = config[pv]
         for sensor_type in pv_config:
