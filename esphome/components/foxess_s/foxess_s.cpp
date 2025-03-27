@@ -174,4 +174,4 @@ void FoxessS::set_inverter_mode(uint32_t mode) {
 }
 
 }  // namespace foxess_s
-}  // namespace esphome
+}   //namespace esphome
