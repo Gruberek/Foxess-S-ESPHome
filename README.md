@@ -1,4 +1,4 @@
-# FoxESS Solar Esphome
+# FoxESS So Esphome
 Read out FoxESS Inverters to Home Assistant using ESPHome.
 
 ![FoxESS](resources/images/foxess.png)
@@ -8,29 +8,29 @@ Compatible with:
 
 ```yaml
 uart:
-  tx_pin: GPIO16
-  rx_pin: GPIO17
+  tx_pin: GPIO1
+  rx_pin: GPIO13
   baud_rate: 9600
 
 sensor:
-   - platform: foxess_solar
-    phase_a:
+   - platform: foxess_s
+    grid:
       voltage:
-        name: "FoxESS Phase A Voltage"
+        name: "FoxESS Grid Voltage"
       current:
-        name: "FoxESS Phase A Current"
+        name: "FoxESS Grid Current"
       active_power:
-        name: "FoxESS Phase A Power"
+        name: "FoxESS Grid Active Power"
       frequency:
-        name: "FoxESS Phase A Frequency"
+        name: "FoxESS Grid Frequency"
 
-    pv1:
+    pv:
       voltage:
-        name: "FoxESS PV1 Voltage"
+        name: "FoxESS PV Voltage"
       current:
-        name: "FoxESS PV1 Current"
+        name: "FoxESS PV Current"
       active_power:
-        name: "FoxESS PV1 Power"
+        name: "FoxESS PV Power"
 
     total_energy_production:
       name: "Total Energy Production"
@@ -64,26 +64,16 @@ sensor:
 - **uart_id** (*Optional*, ID): Manually specify the ID of the UART hub.
 - **flow_control_pin** (*Optional*, Pin): The pin used to switch the direction of the MAX485 transceiver. Defaults to GPIO4.
 - **inverter_status** (*Optional*): Status code of the inverter (0: offline, 1: online, 2: error, 99: waiting for response)
-- **phase_a** (*Optional*): Sensors related to first phase of the inverter
+- **grid** (*Optional*): Sensors related to grid of the inverter
   - **current** (*Optional*): Current flowing to the grid (A)
   - **voltage** (*Optional*): Grid voltage (V)
   - **active_power** (*Optional*): Power delivered to the grid (W)
   - **frequency** (*Optional*): Grid frequency (Hz)
-- **phase_b** (*Optional*): Sensors related to second phase of the inverter
-  - See **phase_a**
-- **phase_c** (*Optional*): Sensors related to third phase of the inverter
-  - See **phase_a**
 
-- **pv1** (*Optional*): Sensors related to the first group PV cells
-  - **current** (*Optional*): Current flowing from PV1 (A)
-  - **voltage** (*Optional*): PV1 Voltage (V)
-  - **active_power** (*Optional*): PV1 power production (W)
-- **pv2** (*Optional*): Sensors related to the second group PV cells
-  - See **pv1**
-- **pv3** (*Optional*): Sensors related to the third group PV cells
-  - See **pv1**
-- **pv4** (*Optional*): Sensors related to the fourth group PV cells
-  - See **pv1**
+ **pv** (*Optional*): Sensors related to PV cells
+  - **current** (*Optional*): Current flowing from PV (A)
+  - **voltage** (*Optional*): PV Voltage (V)
+  - **active_power** (*Optional*): PV Power production (W)
 
 - **total_energy_production** (*Optional*): Total energy produced during lifetime of inverter (kWh)
 - **energy_production_day** (*Optional*): Total energy produced today (kWh)
