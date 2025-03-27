@@ -7,7 +7,7 @@ from esphome.const import (
     CONF_CURRENT,
     CONF_FREQUENCY,
     CONF_ID,
-#    CONF_GRID,
+    CONF_GRID,
     CONF_VOLTAGE,
     DEVICE_CLASS_CURRENT,
     DEVICE_CLASS_ENERGY,
@@ -29,7 +29,6 @@ CONF_FLOW_CONTROL_PIN = "flow_control_pin"
 CONF_ENERGY_PRODUCTION_DAY = "energy_production_day"
 CONF_TOTAL_ENERGY_PRODUCTION = "total_energy_production"
 CONF_PV = "pv"
-CONF_GRID="grid"
 CONF_LOADS_POWER = "loads_power"
 CONF_GRID_POWER = "grid_power"
 CONF_GENERATION_POWER = "generation_power"
@@ -181,19 +180,11 @@ async def to_code(config):
     flow_control_pin = await cg.gpio_pin_expression(config[CONF_FLOW_CONTROL_PIN])
     cg.add(var.set_fc_pin(flow_control_pin))
 
-    grid in enumerate([CONF_GRID]):
-        if grid not in config:
-            continue
-
         grid_config = config[grid]
         for sensor_type in GRID_SENSORS:
             if sensor_type in grid_config:
                 sens = await sensor.new_sensor(grid_config[sensor_type])
                 cg.add(getattr(var, f"set_grid_{sensor_type}_sensor")(sens))
-
-    pv in enumerate([CONF_PV]):
-        if pv not in config:
-            continue
 
         pv_config = config[pv]
         for sensor_type in pv_config:
