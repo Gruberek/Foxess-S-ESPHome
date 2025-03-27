@@ -29,7 +29,7 @@ CONF_FLOW_CONTROL_PIN = "flow_control_pin"
 CONF_ENERGY_PRODUCTION_DAY = "energy_production_day"
 CONF_TOTAL_ENERGY_PRODUCTION = "total_energy_production"
 CONF_PV = "pv"
-
+CONF_GRID="grid"
 CONF_LOADS_POWER = "loads_power"
 CONF_GRID_POWER = "grid_power"
 CONF_GENERATION_POWER = "generation_power"
