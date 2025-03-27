@@ -1,4 +1,4 @@
-# FoxESS So Esphome
+# FoxESS S Esphome
 Read out FoxESS Inverters to Home Assistant using ESPHome.
 
 ![FoxESS](resources/images/foxess.png)
